@@ -1,5 +1,3 @@
-import time
-
 import requests
 import json
 from bs4 import BeautifulSoup
@@ -10,11 +8,11 @@ def crawl_desc(url: str) -> str:
     soup = BeautifulSoup(page.content, "html.parser")
     t_book = soup.find_all('p')[3]
     res = t_book.string
-    print(res)
+    # print(res)
     return res
 
 def save_desc(book):
-    print(book[0])
+    # print(book[0])
     with open(r'test/{}.txt'.format(book[0]), 'w+', encoding='utf-8') as output_file:
         output = crawl_desc(book[1])
         if crawl_desc(book[1]) == None:
@@ -23,10 +21,10 @@ def save_desc(book):
             output_file.write(output)
 
 if __name__ == '__main__':
-    start=time.time()
+    # start=time.time()
     with open('url.json', 'r') as input_file:
         book_list = json.load(input_file)
     for book in book_list:
         t=threading.Thread(target=save_desc,args=(book,))
         t.start()
-    print(time.time()-start)
+    # print(time.time()-start)
