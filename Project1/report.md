@@ -12,14 +12,17 @@ enter its URL  `https://books.toscrape.com/catalogue/page-10.html`.
 
 In each book list page, I noticed that all information about a book we need is in the element named `article` and its class is `product_pod`. By finding all element like this, we can get a list of 
 all books in this page. In each `article product_pod` element, there is `a` element like `<a href="URL" title="TITLE">TITLE</a>` containing all information we need. 
-> Note: We should extract the title from `title` attribute, not its content. Because the content will hide the last several letters if the title is too long. For example, <a href="URL" title="**Foolproof Preserving: A Guide to Small Batch Jams, Jellies, Pickles, Condiments, and More: A Foolproof Guide to Making Small Batch Jams, Jellies, Pickles, Condiments, and  More**"> **Foolproof Preserving: A Guide ...**</a>
+> Note: We should extract the title from `title` attribute, not its content. Because the content will hide the last several letters if the title is too long. For example, 
+> title="**Foolproof Preserving: A Guide to Small Batch Jams, Jellies, Pickles, Condiments, and More: A Foolproof Guide to Making Small Batch Jams, Jellies, Pickles, Condiments, and  More**" 
+> content in element is **Foolproof Preserving: A Guide ...**
 #### Getting the description of each book
 In book detail page, the forth `p` element of a element called `article` with `product_page` class contain the book description, and only one `h1` element is the title of the book. We can get them 
 and store them.
 > Note: On my test environment, Windows, according to the rule of  naming a file on Windows system, ` / \ " ' * ; - ? [ ] ( ) ~ ! $ { } &lt > # @ & | space tab newline` are not allowed. These 
 > might be in the title. We must replace these with other character. In my program, blank space is used to replace all of them.
 ```python
-book['title'].replace('<','').replace('>','').replace('\\','').replace('/','').replace(':','').replace('*','').replace('?','').replace('<','')
+book['title'].replace('<','').replace('>','').replace('\\','').
+    replace('/','').replace(':','').replace('*','').replace('?','').replace('<','')
 ``` 
 ### Build Corpus
 #### Strip
