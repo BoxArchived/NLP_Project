@@ -27,7 +27,7 @@ def text_strip(text):
     #   strip the '...more' at the end of each original text
     #Convert letters to lowercase
     text=text.lower()
-    text=re.sub(r'\.\.\.more','more',text)
+    text=re.sub(r'\.\.\.more$','more',text)
     text = re.sub(r'n\'t', ' not', text)
     text = re.sub(r'\'am', ' am', text)
     text = re.sub(r'\'re', ' are', text)

@@ -18,8 +18,7 @@ all books in this page. In each `article product_pod` element, there is `a` elem
 #### Getting the description of each book
 In book detail page, the forth `p` element of a element called `article` with `product_page` class contain the book description, and only one `h1` element is the title of the book. We can get them 
 and store them.
-> Note: On my test environment, Windows, according to the rule of  naming a file on Windows system, ` / \ " ' * ; - ? [ ] ( ) ~ ! $ { } &lt > # @ & | space tab newline` are not allowed. These 
-> might be in the title. We must replace these with other character. In my program, blank space is used to replace all of them.
+Note: On my test environment, Windows, according to the rule of  naming a file on Windows system, / \ " ' * ; - ? [ ] ( ) ~ ! $ { } &lt > # @ & | space tab newline are not allowed. These might be in the title. We must replace these with other character. In my program, blank space is used to replace all of them.
 ```python
 book['title'].replace('<','').replace('>','').replace('\\','').
     replace('/','').replace(':','').replace('*','').replace('?','').replace('<','')
@@ -29,7 +28,7 @@ book['title'].replace('<','').replace('>','').replace('\\','').
 I process the term `...more`, `i/I'm`, `you/You're`, `he/He/she/She/it/It's` , `tab` and `newline`:
 ```python
     text=text.lower()
-    text=re.sub(r'\.\.\.more','more',text)
+    text=re.sub(r'\.\.\.more$','more',text)
     text = re.sub(r'n\'t', ' not', text)
     text = re.sub(r'\'am', ' am', text)
     text = re.sub(r'\'re', ' are', text)
