@@ -139,7 +139,7 @@ test/17597 earn
 test/18704 crude
 test/14978 earn
 test/19255 crude
-test/18585 earn
+test/18585 crude
 test/19711 earn
 test/16331 money-fx
 test/19906 earn
@@ -291,7 +291,7 @@ test/18062 earn
 test/21339 money-fx
 test/18243 earn
 test/16837 earn
-test/18751 earn
+test/18751 crude
 test/21410 money-fx
 test/15157 earn
 test/17607 earn

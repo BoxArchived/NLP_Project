@@ -10,7 +10,6 @@ def preprocess(inputfile,outputfile):
     #   Convert all letters to the lowercase
     #   Use NLTK.word_tokenize() to tokenize the sentence
     #   Use nltk.PorterStemmer to stem the words
-    print(inputfile)
     with open(inputfile,encoding='utf-8') as f:
         input_dict=json.load(f)
     stemmer = nltk.stem.porter.PorterStemmer()
@@ -18,7 +17,6 @@ def preprocess(inputfile,outputfile):
         i[2] = re.sub(u"([^\u0041-\u005a\u0061-\u007a ])", "", i[2]).lower().split()
         for k in range(len(i[2])):
             i[2][k] = stemmer.stem(i[2][k])
-    print(outputfile)
     with open(outputfile,'w+',encoding='utf-8') as f:
         f.write(json.dumps(input_dict))
     return
@@ -185,7 +183,6 @@ def classify(probability,testset,outputfile):
     res=""
     with open(testset,encoding='utf-8') as f:
         test_data = json.load(f)
-    print(len(test_data))
     for d in tqdm.tqdm(test_data,total=len(test_data)):
         t_data=[]
         for i in range(5):
@@ -245,7 +242,6 @@ def f1_score(testset,classification_result):
             t.append(2)
         if i[1]=='acq':
             t.append(3)
-            print(1)
         if i[1]=='earn':
             t.append(4)
     t_test=[]
@@ -266,27 +262,25 @@ def f1_score(testset,classification_result):
             line=f.readline()
     for i in tqdm.tqdm(range(len(t))):
         res[t_test[i]][t[i]]+=1
-    for i in res:
-        print(i)
     ans=0
     for i in range(5):
         tp, tn, fn, fp=_f1_score(res,i)
-        p=tp/(tp+fp)
-        r=tp/(tp+fn)
-        f1=2*(p*r)/(p+r)
+        p=tp/(tp+fp) if tp+fp>0 else 'undefined'
+        r=tp/(tp+fn) if tp+fn>0 else 'undefined'
+        f1=2*(p*r)/(p+r) if p!='undefined' and r!='undefined' else 'undefined'
         output=""
         if i==0:
-            output+='crude'
+            output+='crude    '
         if i==1:
-            output+='grain'
+            output+='grain    '
         if i==2:
-            output+='money-fx'
+            output+='money-fx '
         if i==3:
-            output+='acq'
+            output+='acq      '
         if i==4:
-            output+='earn'
-        output+=": Precision {}, Recall {}， F1 {}".format(p,r,f1)
-        ans+=f1
+            output+='earn     '
+        output+=": Precision {:>15.10}, Recall {:>15.10}, F1 {:>15.10}".format(p,r,f1)
+        ans+=f1 if f1!='undefined' else 0
         print(output)
     return ans/5
 def main():
