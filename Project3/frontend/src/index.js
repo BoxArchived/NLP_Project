@@ -151,7 +151,7 @@ class Index extends React.Component{
                     // fontSize:'20px',
                     // lineHeight:'30px',
                     borderRadius:'5px'
-                }}>Bootstrap</a>. Source Code on <a href="" style={{
+                }}>Bootstrap</a>. Source Code on <a href="https://github.com/BoxMars/NLP_Project/tree/master/Project3" style={{
                     textDecoration: 'none',
                     background:'#56BBF1',
                     color:'#fff',
@@ -172,7 +172,7 @@ class Index extends React.Component{
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <div style={{
-      background:'#FFDDEE',
+      background:'#035397',
       height:'100vh',
       width:'100vw'
   }}>

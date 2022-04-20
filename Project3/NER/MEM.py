@@ -44,18 +44,18 @@ class MEMM():
 
         #===== TODO: Add your features here =======#
 
-        #...
-        # features["only_one_cap"]=current_word[0].isupper() and current_word[1:].islower()
         features['is_all_letters']=current_word.isalpha()
         features['previous_.'] = words[position-1]=='.' or position==0
         try:
             if words[position-1].isalpha():
                 features['previous_tag']=nltk.pos_tag([words[position-1]])[0][1]
+            features['previous'] = words[position - 1]
         except Exception:
             pass
         try:
             if words[position+1].isalpha():
                 features['next_tag']=nltk.pos_tag([words[position+1]])[0][1]
+            features['next'] = words[position + 1]
         except Exception:
             pass
         if current_word.isalpha():
@@ -63,11 +63,13 @@ class MEMM():
         try:
             if words[position-2].isalpha():
                 features['previous_2_tag']=nltk.pos_tag([words[position-2]])[0][1]
+            features['previous_2'] = words[position - 2]
         except Exception:
             pass
         try:
             if words[position+2].isalpha():
                 features['next_2_tag']=nltk.pos_tag([words[position+2]])[0][1]
+            features['next_2'] = words[position + 2]
         except Exception:
             pass
 
@@ -129,8 +131,12 @@ class MEMM():
         """
         words, labels = self.load_data(self.train_path)
         previous_labels = ["O"] + labels
-        features = [self.features(words, previous_labels[i], i)
-                    for i in range(len(words))]
+        features = []
+        print("\tGenerate Features...")
+        for i in tqdm(range(len(words))):
+            features.append(self.features(words, previous_labels[i], i))
+        # features = [self.features(words, previous_labels[i], i)
+        #             for i in range(len(words))]
         (m, n) = bound
         pdists = self.classifier.prob_classify_many(features[m:n])
 
