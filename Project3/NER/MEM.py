@@ -62,15 +62,15 @@ class MEMM():
         features['is_all_letters']=current_word.isalpha()
         features['previous_.'] = words[position-1]=='.' or position==0
         try:
-            # if words[position-1].isalpha():
-                # features['previous_tag']=nltk.pos_tag([words[position-1]])[0][1]
+            if words[position-1].isalpha():
+                features['previous_tag']=nltk.pos_tag([words[position-1]])[0][1]
             features['previous'] = words[position - 1]
             features['p_name'] = words[position - 1] in self.name_lsit
         except Exception:
             pass
         try:
-            # if words[position+1].isalpha():
-                # features['next_tag']=nltk.pos_tag([words[position+1]])[0][1]
+            if words[position+1].isalpha():
+                features['next_tag']=nltk.pos_tag([words[position+1]])[0][1]
             features['next'] = words[position + 1]
             features['n_name'] = words[position + 1] in self.name_lsit
         except Exception:
@@ -79,15 +79,15 @@ class MEMM():
             features['tag']=nltk.pos_tag([current_word])[0][1]
             features['name'] = current_word in self.name_lsit
         try:
-            # if words[position-2].isalpha():
-                # features['previous_2_tag']=nltk.pos_tag([words[position-2]])[0][1]
+            if words[position-2].isalpha():
+                features['previous_2_tag']=nltk.pos_tag([words[position-2]])[0][1]
             features['previous_2'] = words[position - 2]
             features['p_2_name'] = words[position - 2] in self.name_lsit
         except Exception:
             pass
         try:
-            # if words[position+2].isalpha():
-            #     features['next_2_tag']=nltk.pos_tag([words[position+2]])[0][1]
+            if words[position+2].isalpha():
+                features['next_2_tag']=nltk.pos_tag([words[position+2]])[0][1]
             features['next_2'] = words[position + 2]
             features['n_2_name'] = words[position + 2] in self.name_lsit
         except Exception:
