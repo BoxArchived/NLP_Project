@@ -18,8 +18,8 @@ class Index extends React.Component{
     handleSubmit(e){
         e.preventDefault()
         console.log('asd')
-        var url='http://localhost:5000/?text='
-        // var url='https://nlpproject.boxz.dev/api?text='
+        // var url='http://localhost:5000/?text='
+        var url='https://nlpproject.boxz.dev/api?text='
         fetch(url+ this.state.text).then(res=>
             res.json()
         ).then(data=>{
@@ -85,12 +85,17 @@ class Index extends React.Component{
                     borderRadius:'20px'
                 }
             }>
+                <h1 style={{
+                    fontSize:'24px',
+                    lineHeight:'35px',
+                    textAlign:'center',
+                }}>Person Name Recognition</h1>
                 <h4 style={{
                     fontSize:'22px',
                     lineHeight:'35px'
                 }}>Hi everyone👋. This is the <a href="https://www.cis.um.edu.mo/bsccourses.php?code=CISC3025&year=16" style={{
                     textDecoration: 'none',
-                    background:'#56BBF1',
+                    background:'#FFB2A6',
                     color:'#fff',
                     paddingLeft:'5px',
                     paddingRight:'5px',
@@ -135,7 +140,7 @@ class Index extends React.Component{
                 {this.state.output}
                 <div style={{marginTop:'2vh'}}><span >Built with <a href="https://reactjs.org/" style={{
                     textDecoration: 'none',
-                    background:'#56BBF1',
+                    background:'#FFB2A6',
                     color:'#fff',
                     paddingLeft:'5px',
                     paddingRight:'5px',
@@ -144,7 +149,7 @@ class Index extends React.Component{
                     borderRadius:'5px'
                 }}>React</a> and <a href="https://getbootstrap.com/" style={{
                     textDecoration: 'none',
-                    background:'#56BBF1',
+                    background:'#FFB2A6',
                     color:'#fff',
                     paddingLeft:'5px',
                     paddingRight:'5px',
@@ -153,7 +158,7 @@ class Index extends React.Component{
                     borderRadius:'5px'
                 }}>Bootstrap</a>. Source Code on <a href="https://github.com/BoxMars/NLP_Project/tree/master/Project3" style={{
                     textDecoration: 'none',
-                    background:'#56BBF1',
+                    background:'#FFB2A6',
                     color:'#fff',
                     paddingLeft:'5px',
                     paddingRight:'5px',
@@ -176,6 +181,7 @@ root.render(
       height:'100vh',
       width:'100vw'
   }}>
+
       <Index></Index>
   </div>
 );

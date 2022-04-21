@@ -7,6 +7,8 @@
 # Created Date : April 4th 2020, 17:45:05
 # Last Modified: April 4th 2020, 17:45:05
 # --------------------------------------------------
+from threading import Thread
+
 import nltk
 from nltk.corpus import names
 from nltk.classify.maxent import MaxentClassifier
@@ -15,7 +17,18 @@ from sklearn.metrics import (accuracy_score, fbeta_score, precision_score,
 import os
 from tqdm import tqdm
 import pickle
-
+class FeaturesThread(Thread):
+    def __init__(self,data,labels,memm):
+        super(FeaturesThread,self).__init__()
+        self.data=data
+        self.res=[]
+        self.labels=labels
+        self.memm=memm
+    def get_data(self):
+        return self.data
+    def run(self) -> None:
+        for i in tqdm(range(len(self.data))):
+            self.res.append(self.memm.features(self.data, self.labels[i], i))
 
 class MEMM():
     def __init__(self):
@@ -24,6 +37,7 @@ class MEMM():
         self.beta = 0
         self.max_iter = 0
         self.classifier = None
+        self.name_lsit=names.words('male.txt')+names.words('female.txt')
 
     def features(self, words, previous_label, position):
         """
@@ -48,30 +62,34 @@ class MEMM():
         features['is_all_letters']=current_word.isalpha()
         features['previous_.'] = words[position-1]=='.' or position==0
         try:
-            if words[position-1].isalpha():
-                features['previous_tag']=nltk.pos_tag([words[position-1]])[0][1]
+            # if words[position-1].isalpha():
+                # features['previous_tag']=nltk.pos_tag([words[position-1]])[0][1]
             features['previous'] = words[position - 1]
+            features['p_name'] = words[position - 1] in self.name_lsit
         except Exception:
             pass
         try:
-            if words[position+1].isalpha():
-                features['next_tag']=nltk.pos_tag([words[position+1]])[0][1]
+            # if words[position+1].isalpha():
+                # features['next_tag']=nltk.pos_tag([words[position+1]])[0][1]
             features['next'] = words[position + 1]
+            features['n_name'] = words[position + 1] in self.name_lsit
         except Exception:
             pass
         if current_word.isalpha():
             features['tag']=nltk.pos_tag([current_word])[0][1]
-            features['name'] = current_word in names.words('male.txt') or current_word in names.words('female.txt')
+            features['name'] = current_word in self.name_lsit
         try:
-            if words[position-2].isalpha():
-                features['previous_2_tag']=nltk.pos_tag([words[position-2]])[0][1]
+            # if words[position-2].isalpha():
+                # features['previous_2_tag']=nltk.pos_tag([words[position-2]])[0][1]
             features['previous_2'] = words[position - 2]
+            features['p_2_name'] = words[position - 2] in self.name_lsit
         except Exception:
             pass
         try:
-            if words[position+2].isalpha():
-                features['next_2_tag']=nltk.pos_tag([words[position+2]])[0][1]
+            # if words[position+2].isalpha():
+            #     features['next_2_tag']=nltk.pos_tag([words[position+2]])[0][1]
             features['next_2'] = words[position + 2]
+            features['n_2_name'] = words[position + 2] in self.name_lsit
         except Exception:
             pass
 
@@ -90,12 +108,33 @@ class MEMM():
             labels.append(doublet[1])
         return words, labels
 
+    def get_features(self,words,labels):
+        l=len(words)
+        res=[]
+        threadList=[]
+        n=100000
+        if l%n==0:
+            for i in range(l//n):
+                threadList.append(FeaturesThread(words[n*i:n*(i+1)-1],labels[n*i:n*(i+1)-1],self))
+        else:
+            for i in range(l//n):
+                threadList.append(FeaturesThread(words[n*i:n*(i+1)-1],labels[n*i:n*(i+1)-1],self))
+            threadList.append(FeaturesThread(words[n * (l//n +1):], labels[n * (l//n +1):], self))
+        for t in threadList:
+            t.start()
+        for t in threadList:
+            t.join()
+        for t in threadList:
+            res+=t.get_data()
+        return res
+
     def train(self):
         print('Training classifier...')
         words, labels = self.load_data(self.train_path)
         previous_labels = ["O"] + labels
         features = []
         print("\tGenerate Features...")
+        # features=self.get_features(words,previous_labels)
         for i in tqdm(range(len(words))):
             features.append(self.features(words, previous_labels[i], i))
         # features = [self.features(words, previous_labels[i], i)
@@ -111,6 +150,7 @@ class MEMM():
         previous_labels = ["O"] + labels
         features=[]
         print("\tGenerate Features...")
+        # features = self.get_features(words, previous_labels)
         for i in tqdm(range(len(words))):
             features.append(self.features(words, previous_labels[i], i))
         # features = [self.features(words, previous_labels[i], i)
@@ -135,6 +175,7 @@ class MEMM():
         previous_labels = ["O"] + labels
         features = []
         print("\tGenerate Features...")
+        # features = self.get_features(words, previous_labels)
         for i in tqdm(range(len(words))):
             features.append(self.features(words, previous_labels[i], i))
         # features = [self.features(words, previous_labels[i], i)
