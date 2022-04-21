@@ -8,6 +8,7 @@
 # Last Modified: April 4th 2020, 17:45:05
 # --------------------------------------------------
 import nltk
+from nltk.corpus import names
 from nltk.classify.maxent import MaxentClassifier
 from sklearn.metrics import (accuracy_score, fbeta_score, precision_score,
                              recall_score)
@@ -60,6 +61,7 @@ class MEMM():
             pass
         if current_word.isalpha():
             features['tag']=nltk.pos_tag([current_word])[0][1]
+            features['name'] = current_word in names.words('male.txt') or current_word in names.words('female.txt')
         try:
             if words[position-2].isalpha():
                 features['previous_2_tag']=nltk.pos_tag([words[position-2]])[0][1]
