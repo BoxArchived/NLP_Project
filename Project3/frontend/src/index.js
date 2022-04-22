@@ -18,8 +18,8 @@ class Index extends React.Component{
     handleSubmit(e){
         e.preventDefault()
         console.log('asd')
-        var url='http://localhost:5000/?text='
-        // var url='https://nlpproject.boxz.dev/api?text='
+        // var url='http://localhost:5000/?text='
+        var url='https://nlpproject.boxz.dev/api?text='
         fetch(url+ this.state.text).then(res=>
             res.json()
         ).then(data=>{
