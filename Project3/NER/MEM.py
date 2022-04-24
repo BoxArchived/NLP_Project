@@ -112,7 +112,7 @@ class MEMM():
         l=len(words)
         res=[]
         threadList=[]
-        n=100000
+        n=40000
         if l%n==0:
             for i in range(l//n):
                 threadList.append(FeaturesThread(words[n*i:n*(i+1)-1],labels[n*i:n*(i+1)-1],self))
